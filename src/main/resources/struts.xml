@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.5//EN"
+        "http://struts.apache.org/dtds/struts-2.5.dtd">
+<struts>
+    <constant name="struts.objectFactory" value="spring"></constant>
+    <constant name="struts.i18n.encoding" value="UTF-8"></constant>
+    <package name="default" namespace="/" extends="struts-default">
+        <global-allowed-methods>regex:.*</global-allowed-methods>
+        <action name="userAction_*" class="userAction"  method="{1}">
+            <result name="login_success" type="redirect">/index.jsp</result>
+            <result name="login">/login.jsp</result>
+            <result name="register">/register.jsp</result>
+            <result name="register_success" type="redirect">/login.jsp</result>
+            <result name="update_success" type="redirect"> /index.jsp </result>
+            <result name="add_success">/index.jsp</result>
+            <result name="toUpdate"> /update.jsp </result>
+            <result name="del_success" type="redirect">/index.jsp</result>
+        </action>
+    </package>
+</struts>

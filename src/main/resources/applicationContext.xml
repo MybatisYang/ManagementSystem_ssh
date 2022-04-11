@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        ">
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <!-- 数据库驱动 -->
+        <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+        <!-- 数据库地址和名称 -->
+        <property name="url" value="jdbc:mysql://localhost:3306/test?characterEncoding=utf8"/>
+        <!-- 连接名 -->
+        <property name="username" value="root"/>
+        <!-- 连接密码 -->
+        <property name="password" value="root"/>
+    </bean>
+
+
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mappingResources">
+            <list>
+                <value>pojo/User.hbm.xml</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <!-- 选择数据库引擎：默认通用的（最短）：数据库方言 -->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!-- 在控制台显示sql语句 -->
+                <prop key="hibernate.show_sql">true</prop>
+                <!-- 按格式显示sql语句 -->
+                <prop key="hibernate.format_sql">true</prop>
+                <!-- 自动创建表：按何种方式 -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+            </props>
+        </property>
+    </bean>
+
+    <!-- 数据访问类 -->
+    <bean id="userDao" class="dao.UserDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+
+    <!-- 业务逻辑类 -->
+    <bean id="userService" class="service.UserService">
+        <property name="userDao" ref="userDao"></property>
+    </bean>
+
+    <!-- action -->
+    <bean id="userAction" class="action.UserAction" scope="prototype">
+        <property name="userService" ref="userService"></property>
+    </bean>
+
+</beans>
+
